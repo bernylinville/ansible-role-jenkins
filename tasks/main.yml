@@ -1,0 +1,33 @@
+---
+# Install jenkins by docker
+
+- name: Check if docker is running
+  ansible.builtin.service:
+    name: docker
+    state: started
+  become: true
+
+- name: Create jenkins directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ops_user }}"
+    group: "{{ ops_user }}"
+    mode: "0755"
+  with_items:
+    - "{{ jenkins_home }}"
+    - "{{ jenkins_logs }}"
+  become: true
+
+- name: Start jenkins container
+  community.docker.docker_container:
+    name: "{{ jenkins_container_name }}"
+    image: "{{ jenkins_image_name }}:{{ jenkins_image_version }}"
+    restart_policy: always
+    ports:
+      - "{{ jenkins_web_port }}:8080"
+      - "{{ jenkins_agent_port }}:50000"
+    volumes:
+      - "{{ jenkins_home }}:/var/jenkins_home"
+      - "{{ jenkins_logs }}:/var/log/jenkins"
+    memory: "{{ jenkins_memory }}"

@@ -1,0 +1,12 @@
+---
+ops_user: ""
+
+jenkins_home: "/data/appdata/jenkins"
+jenkins_logs: "/data/logs/jenkins"
+
+jenkins_container_name: "jenkins"
+jenkins_image_name: "jenkins/jenkins"
+jenkins_image_version: "2.452.1-lts"
+jenkins_web_port: "8080"
+jenkins_agent_port: "50000"
+jenkins_memory: "4096"
